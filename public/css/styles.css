@@ -1,0 +1,44 @@
+body {
+  background-color: #A683E3;
+  font-family: 'Grenze Gotisch', cursive;
+  color: #fff;
+}
+
+img {
+  height: 400px;
+  width: 600px;
+}
+
+.navbar{
+  height: 100px;
+}
+
+a {
+  color: red;
+}
+
+footer {
+  text-align: center;
+  margin: 2% 3%;
+}
+.title {
+  line-height: 1.5;
+  font-size: 3.5rem;
+}
+
+.size {
+  padding: 8% 10%;
+}
+
+.description {
+  font-size: 1.5rem;
+}
+
+.content {
+  padding-top: 3%;
+}
+
+.img {
+  height: 300px;
+  width: 450px;
+}
