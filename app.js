@@ -1,8 +1,19 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
+const mongoose = require("mongoose");
 const app = express();
-const comments = [];
+
+mongoose.connect("mongodb://localhost:27017/commentDB", {useNewUrlParser: true, useUnifiedTopology: true});
+
+const commentSchema = {
+  name: String,
+  content: String
+}
+
+const Comment = mongoose.model("Comment", commentSchema);
+
+
 const startingContent = "Do you want to know about Vampires?"
 
 app.use(bodyParser.urlencoded({
@@ -32,12 +43,15 @@ app.get("/comment", function(req, res) {
 });
 
 app.post("/comment", function(req, res) {
-  const comment = {
-    name: req.body.name,
-    comment: req.body.comment
-  }
-  comments.push(comment);
-  res.redirect("/thankYou");
+  const comment = new Comment({
+    name: req.body.Pname,
+    content: req.body.Pcomment
+  });
+  comment.save(function(err){
+    if(!err){
+    res.redirect("/thankYou");
+    }
+  })
 });
 
 app.get("/thankYou", function(req, res) {
@@ -45,16 +59,18 @@ app.get("/thankYou", function(req, res) {
 });
 
 app.get("/post", function(req, res) {
-  res.render("commentpost", {
-    posts: comments
+  Comment.find({}, function(err, foundCmt){
+    if(!err){
+      res.render("commentpost", {posts: foundCmt});
+    }
   });
 });
 
 app.get("/vampire/:info", function(req, res) {
   const data = req.params.info;
-  if (data === ":vladTheImpaler") {
+  if (data === "vladTheImpaler") {
     res.render("vlad");
-  } else if (data === ":mercyBrown") {
+  } else if (data === "mercyBrown") {
     res.render("mercyBrown");
   } else {
     res.render("rodheIsland");
